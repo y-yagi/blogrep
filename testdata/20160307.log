@@ -1,0 +1,111 @@
+rails commit log流し読み(2016/03/06)
+
+2016/03/06分のコミットです。
+
+CHANGELOGへの追加はありませんでした。
+
+***
+
+[Revert "Merge pull request #22764 from stevenspiel/titleize_model_name_for_default_submit_button_value"](https://github.com/rails/rails/commit/ddf4c953ae8d10489e0bfd6008bd76395f6e1267)
+
+submit buttonのvalueに表示するmodel名を小文字に変換するよう修正した、[Merge pull request #2764 from stevenspiel/titleize_model_name_for_default_submit_button_value](https://github.com/rails/rails/commit/4158974c60d817c9bc1e2aecb342161295f2ac0d)をrevertしています。
+
+幾つかの言語でi18nの処理が壊れてしまった為、との事です。詳細は[コメント](https://github.com/rails/rails/issues/791#issuecomment-192724640)参照。
+
+***
+
+[Update the rendering guide to match the current behavior](https://github.com/rails/rails/commit/403c57aec052d60431dbae57eedae471d548dd01)
+
+rails guideの`Layouts and Rendering in Rails`の修正です。
+
+[allow :file to be outside rails root, but anything else must be insid… · rails/rails@b7758b4](https://github.com/rails/rails/commit/b7758b40fc035a47f6843158155606d455314c42#diff-a1d6855a40931f0b3f39c7f33d22c9e5)で`render`メソッドに直接 rails root外のファイルを指定する事は出来ないよう対応したのですが、guideにそのパターンの例が残ってしまっていたので、削除しています。
+
+***
+
+[chage `date_time` type ` to `datetime`](https://github.com/rails/rails/commit/a7d6aa389343ee258f19a4fe71869f7ebf3a6a4d)
+
+`activerecord/lib/active_record/type.rb`の修正です。
+
+attributes APIで使用出来るデフォルトの`DateTime`クラスのtypeを`date_time`から`datetime`に変更しています。migrationのtypeと合わせる為。
+
+***
+
+[make attributes API  example to work [ci skip]](https://github.com/rails/rails/commit/55a205c552a4815c692355ca6bcf087524ebae92)
+
+`activerecord/lib/active_record/attributes.rb`のdocの修正です。
+
+attributes APIで独自のserializeを行う場合のexampleコードが正しく動かなかった(`attribute`メソッドの引数の指定が誤っていた)のを修正しています。
+
+***
+
+[remove entry for reverted commit [ci skip]](https://github.com/rails/rails/commit/b6618c6ceed4fcb55eb646d8ff263eb7e8e69512)
+
+rails guideの`Ruby on Rails 5.0 Release Notes`の修正です。
+
+[Revert "Merge pull request #22764 from stevenspiel/titleize_model_name_for_default_submit_button_value"](https://github.com/rails/rails/commit/ddf4c953ae8d10489e0bfd6008bd76395f6e1267)でrevertされた対応について、Rails 5.0のrelease noteから削除しています。
+
+***
+
+[Fix typo `--ssl-cipher`](https://github.com/rails/rails/commit/02b50df3e37c463c9fb6acea10697f94538230fd)
+
+`activerecord/lib/active_record/tasks/mysql_database_tasks.rb`の修正です。
+
+`--ssh-cipher`を`--ssl-cipher`にタイポしていたのを修正しています。
+
+***
+
+[This code won't work](https://github.com/rails/rails/commit/a2eb7962d3986c787d8ca66faca57c26617be499)
+
+`activerecord/lib/active_record/enum.rb`のdocの修正です。
+
+`#enum`メソッド内にメソッド定義した場合のexampleコードがあるのですが、動作しないコードになってしまっていのを修正しています。
+
+***
+
+[use __dir__ to load the environment in config.ru](https://github.com/rails/rails/commit/5d77e3d2dc39f77f91f0a0024b750217aaef4d30)
+
+`railties/lib/rails/generators/rails/app/templates/config.ru`の修正です。
+
+`config/environment`をrequireするのに、`__FILE__`を使用していたのを`__dir__`を使用するよう修正しています。
+
+***
+
+[use __dir__ to load the application in environment.rb](https://github.com/rails/rails/commit/5a06beda7e44185ef2a1bbbee58d682ad77a1bd7)
+
+`railties/lib/rails/generators/rails/app/templates/config/environment.rb`の修正です。
+
+`application`ファイルをrequireするのに、`__FILE__`を使用していたのを`__dir__`を使用するよう修正しています。
+
+***
+
+[use __dir__ for relative paths in config/boot.rb](https://github.com/rails/rails/commit/7d6a8320ee6acc8a54c091eea8607eb8f8ed1423)
+
+`railties/lib/rails/generators/rails/app/templates/config/boot.rb`、
+`railties/lib/rails/generators/rails/plugin/templates/rails/boot.rb`の修正です。
+
+Gemfileをrequireするのに、`__FILE__`を使用していたのを`__dir__`を使用するよう修正しています。
+
+***
+
+[use __dir__ for relative paths in config/application.rb](https://github.com/rails/rails/commit/69371b0d9d2f817468ca69005868724885c2ebe5)
+
+`railties/lib/rails/generators/rails/app/templates/config/application.rb`、
+`railties/lib/rails/generators/rails/plugin/templates/rails/application.rb`の修正です。
+
+bootファイルをrequireするのに、`__FILE__`を使用していたのを`__dir__`を使用するよう修正しています。
+
+***
+
+[prefer require_relative over require + File.expand_path](https://github.com/rails/rails/commit/fbf3411b11762db4bf80dc8695863e623515c701)
+
+railtiesの修正です。
+
+相対pathからファイルをrequireするのに、require + File.expand_pathを使用していたのを、`require_relative`を使用するよう修正しています。
+
+***
+
+[Merge pull request #24085 from vipulnsward/i18n-test-addition](https://github.com/rails/rails/commit/af80974f85f8ffb54e7aa2aea8e171f36c3a7ab3)
+
+`railties/test/application/initializers/i18n_test.rb`の修正です。
+
+i18nのテストで、テスト名と実際行っているテストの内容が異なっている箇所があったのを修正、及び、`i18n.fallbacks`に直接Hashを指定した場合のテストを追加しています。
