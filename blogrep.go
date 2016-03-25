@@ -3,10 +3,16 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 )
 
 func usage() {
 	fmt.Fprintf(os.Stderr, "usage: %s PATTERN\n", os.Args[0])
+}
+
+func readAndGrep(path string, info os.FileInfo, err error) error {
+	fmt.Println(path)
+	return nil
 }
 
 func main() {
@@ -16,4 +22,6 @@ func main() {
 		os.Exit(2)
 	}
 	fmt.Println(args)
+
+	filepath.Walk(".", readAndGrep)
 }
