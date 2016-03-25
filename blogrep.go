@@ -6,6 +6,12 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/fatih/color"
+)
+
+var (
+	warningColor = color.New(color.FgGreen).SprintFunc()
 )
 
 func errorline(s string) {
@@ -16,11 +22,12 @@ func usage() {
 	fmt.Fprintf(os.Stderr, "usage: %s PATTERN\n", os.Args[0])
 }
 
-func containsAll(article string, patterns []string) bool {
+func containsAllAndAddColor(article *string, patterns []string) bool {
 	for _, pattern := range patterns {
-		if !strings.Contains(article, pattern) {
+		if !strings.Contains(*article, pattern) {
 			return false
 		}
+		*article = strings.Replace(*article, pattern, warningColor(pattern), -1)
 	}
 	return true
 }
@@ -47,7 +54,7 @@ func readAndGrep(patterns []string) filepath.WalkFunc {
 		articles = strings.Split(string(data), "***")
 
 		for _, article := range articles {
-			if containsAll(article, patterns) {
+			if containsAllAndAddColor(&article, patterns) {
 				fmt.Fprintln(os.Stdout, article)
 			}
 		}
