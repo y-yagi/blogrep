@@ -8,11 +8,24 @@ import (
 	"strings"
 )
 
+func errorline(s string) {
+	os.Stderr.WriteString(s + "\n")
+}
+
 func usage() {
 	fmt.Fprintf(os.Stderr, "usage: %s PATTERN\n", os.Args[0])
 }
 
-func readAndGrep(pattern string) filepath.WalkFunc {
+func containsAll(article string, patterns []string) bool {
+	for _, pattern := range patterns {
+		if !strings.Contains(article, pattern) {
+			return false
+		}
+	}
+	return true
+}
+
+func readAndGrep(patterns []string) filepath.WalkFunc {
 	return func(path string, info os.FileInfo, err error) error {
 		var articles []string
 
@@ -34,7 +47,7 @@ func readAndGrep(pattern string) filepath.WalkFunc {
 		articles = strings.Split(string(data), "***")
 
 		for _, article := range articles {
-			if strings.Contains(article, pattern) {
+			if containsAll(article, patterns) {
 				fmt.Fprintln(os.Stdout, article)
 			}
 		}
@@ -49,5 +62,11 @@ func main() {
 		usage()
 		os.Exit(2)
 	}
-	filepath.Walk("testdata", readAndGrep(args[0]))
+
+	cwd, _ := os.Getwd()
+	err := filepath.Walk(cwd, readAndGrep(args))
+	if err != nil {
+		errorline(err.Error())
+		os.Exit(1)
+	}
 }
