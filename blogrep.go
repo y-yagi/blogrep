@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/andrew-d/isbinary"
 	"github.com/fatih/color"
 )
 
@@ -41,6 +42,14 @@ func readAndGrep(patterns []string) filepath.WalkFunc {
 		in, err := os.Open(path)
 		if err != nil {
 			return err
+		}
+
+		fileIsBinary, err := isbinary.TestReader(in)
+		if err != nil {
+			return err
+		}
+		if fileIsBinary {
+			return nil
 		}
 
 		defer in.Close()
