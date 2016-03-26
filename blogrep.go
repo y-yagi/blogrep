@@ -44,6 +44,8 @@ func readAndGrep(patterns []string) filepath.WalkFunc {
 			return err
 		}
 
+		defer in.Close()
+
 		fileIsBinary, err := isbinary.TestReader(in)
 		if err != nil {
 			return err
@@ -52,12 +54,11 @@ func readAndGrep(patterns []string) filepath.WalkFunc {
 			return nil
 		}
 
-		defer in.Close()
-
 		data, err := ioutil.ReadAll(in)
 		if err != nil {
 			return err
 		}
+
 		articles = strings.Split(string(data), "\n***\n\n")
 
 		for _, article := range articles {
