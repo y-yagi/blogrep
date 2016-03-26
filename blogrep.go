@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strings"
 
-	"github.com/MichaelTJones/walk"
 	"github.com/fatih/color"
 )
 
@@ -29,7 +29,7 @@ func containsAllAndColorized(article *string, patterns []string) bool {
 	return true
 }
 
-func readAndGrep(patterns []string) walk.WalkFunc {
+func readAndGrep(patterns []string) filepath.WalkFunc {
 	filePathColor := color.New(color.FgGreen, color.Bold).SprintFunc()
 	return func(path string, info os.FileInfo, err error) error {
 		var articles []string
@@ -70,7 +70,7 @@ func main() {
 	}
 
 	cwd, _ := os.Getwd()
-	err := walk.Walk(cwd, readAndGrep(args))
+	err := filepath.Walk(cwd, readAndGrep(args))
 	if err != nil {
 		errorline(err.Error())
 		os.Exit(1)
