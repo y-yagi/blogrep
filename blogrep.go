@@ -49,7 +49,7 @@ func readAndGrep(patterns []string) filepath.WalkFunc {
 		if err != nil {
 			return err
 		}
-		articles = strings.Split(string(data), "***")
+		articles = strings.Split(string(data), "\n***\n\n")
 
 		for _, article := range articles {
 			if containsAllAndColorized(&article, patterns) {
