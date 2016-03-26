@@ -21,7 +21,7 @@ func usage() {
 func containsAllAndColorized(article *string, patterns []string) bool {
 	warningColor := color.New(color.FgYellow).SprintFunc()
 	for _, pattern := range patterns {
-		if !strings.Contains(*article, pattern) {
+		if !strings.Contains(strings.ToLower(*article), strings.ToLower(pattern)) {
 			return false
 		}
 		*article = strings.Replace(*article, pattern, warningColor(pattern), -1)
