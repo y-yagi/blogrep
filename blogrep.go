@@ -22,7 +22,7 @@ func usage() {
 	fmt.Fprintf(os.Stderr, "usage: %s PATTERN\n", os.Args[0])
 }
 
-func containsAllAndAddColor(article *string, patterns []string) bool {
+func containsAllAndColorized(article *string, patterns []string) bool {
 	for _, pattern := range patterns {
 		if !strings.Contains(*article, pattern) {
 			return false
@@ -54,7 +54,7 @@ func readAndGrep(patterns []string) filepath.WalkFunc {
 		articles = strings.Split(string(data), "***")
 
 		for _, article := range articles {
-			if containsAllAndAddColor(&article, patterns) {
+			if containsAllAndColorized(&article, patterns) {
 				fmt.Fprintln(os.Stdout, article)
 			}
 		}
