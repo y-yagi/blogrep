@@ -1,0 +1,8 @@
+language: go
+
+go:
+  - 1.5
+
+install:
+  - go get github.com/andrew-d/isbinary
+  - go get github.com/fatih/color
