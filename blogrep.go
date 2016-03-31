@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -30,7 +31,7 @@ func containsAllAndColorized(article *string, patterns []string) bool {
 	return true
 }
 
-func readAndGrep(patterns []string) filepath.WalkFunc {
+func readAndGrep(patterns []string, writer io.Writer) filepath.WalkFunc {
 	filePathColor := color.New(color.FgGreen, color.Bold).SprintFunc()
 	return func(path string, info os.FileInfo, err error) error {
 		var articles []string
@@ -63,8 +64,8 @@ func readAndGrep(patterns []string) filepath.WalkFunc {
 
 		for _, article := range articles {
 			if containsAllAndColorized(&article, patterns) {
-				fmt.Fprintln(os.Stdout, filePathColor(path))
-				fmt.Fprintln(os.Stdout, article)
+				fmt.Fprintln(writer, filePathColor(path))
+				fmt.Fprintln(writer, article)
 			}
 		}
 
@@ -80,7 +81,7 @@ func main() {
 	}
 
 	cwd, _ := os.Getwd()
-	err := filepath.Walk(cwd, readAndGrep(args))
+	err := filepath.Walk(cwd, readAndGrep(args, os.Stdout))
 	if err != nil {
 		errorline(err.Error())
 		os.Exit(1)
