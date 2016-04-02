@@ -17,7 +17,7 @@ func errorline(s string) {
 }
 
 func usage() {
-	fmt.Fprintf(os.Stderr, "usage: %s PATTERN\n", os.Args[0])
+	fmt.Fprintf(os.Stderr, "usage: %s PATTERNS\n", os.Args[0])
 }
 
 func containsAllAndColorized(article *string, patterns []string) bool {
