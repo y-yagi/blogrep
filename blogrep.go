@@ -55,6 +55,7 @@ func readAndGrep(patterns []string, writer io.Writer) filepath.WalkFunc {
 			return nil
 		}
 
+		in.Seek(0, 0)
 		data, err := ioutil.ReadAll(in)
 		if err != nil {
 			return err
