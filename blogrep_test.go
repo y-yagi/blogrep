@@ -8,14 +8,14 @@ import (
 	"testing"
 )
 
-const TESTDATA_DIR = "/testdata/"
+const TestdataDir = "/testdata/"
 
 func TestSearchText(t *testing.T) {
 	buf := &bytes.Buffer{}
 	patterns := []string{"i18n", "revert"}
 
 	cwd, _ := os.Getwd()
-	if err := filepath.Walk(cwd+TESTDATA_DIR, readAndGrep(patterns, buf)); err != nil {
+	if err := filepath.Walk(cwd+TestdataDir, readAndGrep(patterns, buf)); err != nil {
 		t.Fatalf("got error %s", err.Error())
 	}
 
@@ -35,7 +35,7 @@ func TestSearchTopText(t *testing.T) {
 	patterns := []string{"流し読み"}
 
 	cwd, _ := os.Getwd()
-	if err := filepath.Walk(cwd+TESTDATA_DIR, readAndGrep(patterns, buf)); err != nil {
+	if err := filepath.Walk(cwd+TestdataDir, readAndGrep(patterns, buf)); err != nil {
 		t.Fatalf("got error %s", err.Error())
 	}
 
