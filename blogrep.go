@@ -84,8 +84,15 @@ func main() {
 		os.Exit(2)
 	}
 
+	const home = "/home/yaginuma/Dropbox/blog/rails-commit-log"
+	err := os.Chdir(home)
+	if err != nil {
+		errorline(err.Error())
+		os.Exit(1)
+	}
+
 	cwd, _ := os.Getwd()
-	err := filepath.Walk(cwd, readAndGrep(args, os.Stdout))
+	err = filepath.Walk(cwd, readAndGrep(args, os.Stdout))
 	if err != nil {
 		errorline(err.Error())
 		os.Exit(1)
