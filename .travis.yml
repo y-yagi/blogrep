@@ -1,8 +1,14 @@
 language: go
 
 go:
-  - 1.5
+  - 1.8
+  - 1.9
 
 install:
   - go get github.com/andrew-d/isbinary
   - go get github.com/fatih/color
+  - go get -u github.com/golang/lint/golint
+
+before_script:
+  - go vet
+  - golint
