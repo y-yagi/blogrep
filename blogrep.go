@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -10,7 +11,14 @@ import (
 
 	"github.com/andrew-d/isbinary"
 	"github.com/fatih/color"
+	"github.com/y-yagi/configure"
 )
+
+type config struct {
+	Home string `toml:"home"`
+}
+
+const cmd = "blogrep"
 
 var (
 	warningColor  = color.New(color.FgYellow).SprintFunc()
@@ -23,6 +31,23 @@ func errorline(s string) {
 
 func usage() {
 	fmt.Fprintf(os.Stderr, "usage: %s PATTERNS\n", os.Args[0])
+}
+
+func msg(err error) int {
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%s: %v\n", os.Args[0], err)
+		return 1
+	}
+	return 0
+}
+
+func cmdEdit() error {
+	editor := os.Getenv("EDITOR")
+	if len(editor) == 0 {
+		editor = "vim"
+	}
+
+	return configure.Edit(cmd, editor)
 }
 
 func containsAllAndColorized(article *string, patterns []string) bool {
@@ -76,16 +101,44 @@ func readAndGrep(patterns []string, writer io.Writer) filepath.WalkFunc {
 		return nil
 	}
 }
+func init() {
+	if !configure.Exist(cmd) {
+		var cfg config
+		cfg.Home = ""
+		configure.Save(cmd, cfg)
+	}
+}
 
 func main() {
+	var edit bool
+
+	flag.BoolVar(&edit, "c", false, "edit config")
+	flag.Parse()
+
+	if edit {
+		os.Exit(msg(cmdEdit()))
+	}
+
 	args := os.Args[1:]
+
 	if len(args) < 1 {
 		usage()
 		os.Exit(2)
 	}
 
-	const home = "/home/yaginuma/Dropbox/blog/rails-commit-log"
-	err := os.Chdir(home)
+	var cfg config
+	err := configure.Load(cmd, &cfg)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		os.Exit(1)
+	}
+
+	if len(cfg.Home) == 0 {
+		fmt.Fprintf(os.Stderr, "Please specify home to config file.\n")
+		os.Exit(1)
+	}
+
+	err = os.Chdir(cfg.Home)
 	if err != nil {
 		errorline(err.Error())
 		os.Exit(1)
