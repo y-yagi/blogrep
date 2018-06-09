@@ -1,0 +1,14 @@
+rails commit log流し読み(2017/03/06)
+
+2017/03/06分のコミットです。
+
+CHANGELOGへの追加はありませんでした。
+
+***
+
+[Revert "Merge pull request #22764 from stevenspiel/titleize_model_name_for_default_submit_button_value"](https://github.com/rails/rails/commit/ddf4c953ae8d10489e0bfd6008bd76395f6e1267)
+
+これは2017年の記事です。
+
+幾つかの言語でi18nの処理が壊れてしまった為、との事です。詳細は[コメント](https://github.com/rails/rails/issues/791#issuecomment-192724640)参照。
+
