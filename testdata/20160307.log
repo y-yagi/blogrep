@@ -12,6 +12,8 @@ submit buttonのvalueに表示するmodel名を小文字に変換するよう修
 
 幾つかの言語でi18nの処理が壊れてしまった為、との事です。詳細は[コメント](https://github.com/rails/rails/issues/791#issuecomment-192724640)参照。
 
+これは2016年の記事です。
+
 ***
 
 [Update the rendering guide to match the current behavior](https://github.com/rails/rails/commit/403c57aec052d60431dbae57eedae471d548dd01)

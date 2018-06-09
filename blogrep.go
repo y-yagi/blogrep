@@ -60,11 +60,15 @@ func containsAllAndColorized(article *string, patterns []string) bool {
 	return true
 }
 
-func readAndGrep(patterns []string, writer io.Writer) filepath.WalkFunc {
+func readAndGrep(patterns []string, filePattern string, writer io.Writer) filepath.WalkFunc {
 	return func(path string, info os.FileInfo, err error) error {
 		var articles []string
 
 		if info.IsDir() {
+			return nil
+		}
+
+		if filePattern != "" && !strings.Contains(path, filePattern) {
 			return nil
 		}
 
@@ -111,16 +115,17 @@ func init() {
 
 func main() {
 	var edit bool
+	var filePattern string
 
 	flag.BoolVar(&edit, "c", false, "edit config")
+	flag.StringVar(&filePattern, "f", "", "file name pattern")
 	flag.Parse()
 
 	if edit {
 		os.Exit(msg(cmdEdit()))
 	}
 
-	args := os.Args[1:]
-
+	args := flag.Args()
 	if len(args) < 1 {
 		usage()
 		os.Exit(2)
@@ -145,7 +150,7 @@ func main() {
 	}
 
 	cwd, _ := os.Getwd()
-	err = filepath.Walk(cwd, readAndGrep(args, os.Stdout))
+	err = filepath.Walk(cwd, readAndGrep(args, filePattern, os.Stdout))
 	if err != nil {
 		errorline(err.Error())
 		os.Exit(1)
