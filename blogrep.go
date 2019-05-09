@@ -62,6 +62,10 @@ func containsAllAndColorized(article *string, patterns []string) bool {
 
 func readAndGrep(patterns []string, filePattern string, writer io.Writer) filepath.WalkFunc {
 	return func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
 		var articles []string
 
 		if info.IsDir() {
