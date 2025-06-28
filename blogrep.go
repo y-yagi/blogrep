@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -92,7 +91,7 @@ func readAndGrep(patterns []string, filePattern string, writer io.Writer) filepa
 		}
 
 		in.Seek(0, 0)
-		data, err := ioutil.ReadAll(in)
+		data, err := io.ReadAll(in)
 		if err != nil {
 			return err
 		}
